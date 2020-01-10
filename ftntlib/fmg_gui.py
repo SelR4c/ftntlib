@@ -7,6 +7,7 @@
 # Authors: Charles Prevot
 # Description: A Python module to automate GUI web interface command for FMG
 # Date: 03/01/2020
+#
 ###################################################################
 
 import time
@@ -15,7 +16,7 @@ import requests
 import json
 import sys
 
-if sys.version_info >= (2, 7):
+if sys.version_info >= (2,7):
     logging.captureWarnings(True)
 else:
     from requests.packages.urllib3.exceptions import InsecureRequestWarning

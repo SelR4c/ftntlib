@@ -9,14 +9,13 @@
 #
 ###################################################################
 
-
 import time
 import logging
 import requests
 import json
 import sys
 
-if sys.version_info >= (2, 7):
+if sys.version_info >= (2,7):
     logging.captureWarnings(True)
 else:
     from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -340,8 +339,13 @@ class FortiManagerJSON (object):
     def taskwait(self, taskid, wait=0, interval=10, timeout=120):
         url = 'task/task/' + str(taskid)
 
+        if wait > timeout:
+            return
+
+        time.sleep(wait)
+
         while (wait < timeout):
-            status, response = self._do('get', url)
+            status, response = self.get(url)
             if status['code'] == 0:
                 if response['percent'] == 100:
                     return status, response
@@ -350,7 +354,7 @@ class FortiManagerJSON (object):
                     wait = wait + interval
             else:
                 return status, response
-        return {'code': -1 , 'message': "Timeout"}, taskid
+        return {'code': -1, 'message': "Timeout"}, taskid
 
     def delete_task(self, taskid):
         url = 'task/task/' + str(taskid)
